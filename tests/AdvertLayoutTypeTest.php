@@ -1,4 +1,5 @@
 <?php
 
-class AdvertLayoutTypeTest extends SapphireTest {
+class AdvertLayoutTypeTest extends SapphireTest
+{
 }

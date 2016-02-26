@@ -1,4 +1,5 @@
 <?php
 
-class AdvertSiteTreeExtensionTest extends SapphireTest {
+class AdvertSiteTreeExtensionTest extends SapphireTest
+{
 }

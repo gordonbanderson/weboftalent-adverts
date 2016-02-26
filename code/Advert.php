@@ -1,20 +1,15 @@
 <?php
 
 /**
- * Only show a page with login when not logged in
+ * Only show a page with login when not logged in.
  */
-class Advert extends DataObject {
-
-
-  static $searchable_fields = array(
+class Advert extends DataObject
+{
+    public static $searchable_fields = array(
     'WebsiteLink',
  );
 
-
- 
-
-
-  static $db = array(
+    public static $db = array(
     // title to show in model admin
     'Title' => 'Varchar(255)',
 
@@ -29,8 +24,7 @@ class Advert extends DataObject {
     'AdbrokerJavascript' => 'Text',
 
     // the source of the advert, either an image or adbroker JS
-    "AdvertSource" => "Enum('UploadedImage,AdbrokerJavascript')",
-
+    'AdvertSource' => "Enum('UploadedImage,AdbrokerJavascript')",
 
     // date range valid
     'StartDate' => 'Datetime',
@@ -41,51 +35,41 @@ class Advert extends DataObject {
     'Clickthroughs' => 'Int',
  );
 
-
-
-
-  static $has_one = array(
+    public static $has_one = array(
     'AdvertImage' => 'Image',
-    'AdvertCategory' => "AdvertCategory",
-    "AdvertLayoutType" => "AdvertLayoutType"
+    'AdvertCategory' => 'AdvertCategory',
+    'AdvertLayoutType' => 'AdvertLayoutType',
  );
 
-
-  public static $summary_fields = array(
+    public static $summary_fields = array(
     'Title' => 'Title',
     'AdvertCategory.Title',
     'AdvertLayoutType.Title',
     'StartDate' => 'StartDate',
-    'FinishDate' => 'FinishDate'
+    'FinishDate' => 'FinishDate',
  );
 
-
   // add an index in the db for the digital signature and date ranges
-    static $indexes = array(
+    public static $indexes = array(
         'DigitalSignature' => true,
         'StartDate' => '(StartDate)',
         'FinishDate' => '(FinishDate)',
-        'AdvertCategories' => '(AdvertCategoryID)'
+        'AdvertCategories' => '(AdvertCategoryID)',
     );
 
+    public function getCMSFields()
+    {
+        Requirements::javascript('weboftalent-adverts/javascript/advertedit.js');
 
-
-
-
-  function getCMSFields() {
-
-    Requirements::javascript('weboftalent-adverts/javascript/advertedit.js');
-    
      // throw away the scaffolding and start afresh
     $fields = new FieldList();
 
     // add a main tab
-    $fields->push(new TabSet("Root", $mainTab = new Tab("Main")));
-    $mainTab->setTitle(_t('SiteTree.TABMAIN', "Main"));
-
+    $fields->push(new TabSet('Root', $mainTab = new Tab('Main')));
+        $mainTab->setTitle(_t('SiteTree.TABMAIN', 'Main'));
 
     // human readable title
-    $fields->addFieldToTab('Root.Main',  new TextField('Title', 
+    $fields->addFieldToTab('Root.Main',  new TextField('Title',
                                 'Human readable title for the advert'));
 
     // a Javascript toggle on this field displays either the adbroker text field, or an image with URL
@@ -93,73 +77,63 @@ class Advert extends DataObject {
         singleton('Advert')->dbObject('AdvertSource')->enumValues()
    ));
 
-    if ($this->ID == 0) {
-        $html = '<div class="field text">An image can be uploaded after the advert is saved for the first time</div>';
-        $fields->addFieldToTab('Root.Main', new LiteralField('ImageInfo', $html));
-    } else {
-       $fields->addFieldToTab('Root.Main', $imageUploader = new UploadField('AdvertImage', 
+        if ($this->ID == 0) {
+            $html = '<div class="field text">An image can be uploaded after the advert is saved for the first time</div>';
+            $fields->addFieldToTab('Root.Main', new LiteralField('ImageInfo', $html));
+        } else {
+            $fields->addFieldToTab('Root.Main', $imageUploader = new UploadField('AdvertImage',
         'Image that will be shown as the actual advert'));
-        Folder::find_or_make('ads');
-        $imageUploader->setFolderName('ads'
-        ); 
-    }
-    
-
+            Folder::find_or_make('ads');
+            $imageUploader->setFolderName('ads'
+        );
+        }
 
     // quick tags, faster than the grid editor - these are processed prior to save to create/assign tags
-    $fields->addFieldToTab('Root.Main',  new TextField('WebsiteLink', 
+    $fields->addFieldToTab('Root.Main',  new TextField('WebsiteLink',
                                 'The URL that will be shown when the advert image is clicked'));
 
-    $fields->addFieldToTab('Root.Main',  new TextareaField('AdbrokerJavascript', 
+        $fields->addFieldToTab('Root.Main',  new TextareaField('AdbrokerJavascript',
                                 'JavaScript provided by the adbroker'));
 
-    $fields->addFieldToTab('Root.Main', $sdf = new DateField('StartDate', 'The date the advert becomes active'));
-    $fields->addFieldToTab('Root.Main', $fdf = new DateField('FinishDate', 'The date the advert becomes inactive'));
-    $sdf->setConfig('showcalendar', true);
-    $fdf->setConfig('showcalendar', true);
+        $fields->addFieldToTab('Root.Main', $sdf = new DateField('StartDate', 'The date the advert becomes active'));
+        $fields->addFieldToTab('Root.Main', $fdf = new DateField('FinishDate', 'The date the advert becomes inactive'));
+        $sdf->setConfig('showcalendar', true);
+        $fdf->setConfig('showcalendar', true);
 
+        $categoryfield = new DropdownField('AdvertCategoryID', 'Category', AdvertCategory::get()->sort('Title')->map('ID', 'Title'));
+        $categoryfield->setEmptyString('(Select one)');
 
-    $categoryfield = new DropdownField('AdvertCategoryID', 'Category', AdvertCategory::get()->sort('Title')->map('ID', 'Title'));
-    $categoryfield->setEmptyString('(Select one)');
+        $layoutfield = new DropdownField('AdvertLayoutTypeID', 'Layout Type', AdvertLayoutType::get()->sort('Title')->map('ID', 'Title'));
+        $layoutfield->setEmptyString('(Select one)');
 
-    $layoutfield = new DropdownField('AdvertLayoutTypeID', 'Layout Type', AdvertLayoutType::get()->sort('Title')->map('ID', 'Title'));
-    $layoutfield->setEmptyString('(Select one)');
+        $fields->addFieldToTab('Root.Main', $categoryfield);
+        $fields->addFieldToTab('Root.Main', $layoutfield);
 
-    $fields->addFieldToTab('Root.Main', $categoryfield);
-    $fields->addFieldToTab('Root.Main', $layoutfield);
+        return $fields;
+    }
 
-    return $fields;
-  }
-
-
-
-  public function onBeforeWrite() {
-    $this->DigitalSignature = $this->CalculateDigitalSignature();
+    public function onBeforeWrite()
+    {
+        $this->DigitalSignature = $this->CalculateDigitalSignature();
     //error_log("DIG SIG:".$this->DigitalSignature);
     parent::onBeforeWrite();
-  }
-
+    }
 
   /*
     Calculate a digital signature from several of the fields
   */
-  public function CalculateDigitalSignature() {
-    //error_log("Calculating dig sig");
+  public function CalculateDigitalSignature()
+  {
+      //error_log("Calculating dig sig");
     /* because we save the impression counter on every rendition this cannot include
     - number of impressions
     - last edited
     Otherwise the clickthrough will fail
     */
     $data = $this->ID.'_'.$this->AdvertCategory()->Title.'_'.$this->AdvertLayoutType()->Title.'_'.$this->AdbrokerJavascript;
-    $data .= '_'.$this->StartDate.'_'.$this->FinishDate.'_'.$this->ClickThroughs.'_advert';
-    $hashed = hash('sha512', $data);
+      $data .= '_'.$this->StartDate.'_'.$this->FinishDate.'_'.$this->ClickThroughs.'_advert';
+      $hashed = hash('sha512', $data);
     //error_log("HASH CREATED:".$hashed);
     return $hashed;
   }
-
-
-
-
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
 
-class AdvertReportTest extends SapphireTest {
+class AdvertReportTest extends SapphireTest
+{
 }

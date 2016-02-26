@@ -1,4 +1,5 @@
 <?php
 
-class SecureFileControllerTest extends SapphireTest {
+class SecureFileControllerTest extends SapphireTest
+{
 }

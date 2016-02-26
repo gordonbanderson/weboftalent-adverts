@@ -174,7 +174,6 @@
             $this->flush();
             // Push the file while not EOF and connection exists
             while (!feof($filePointer) && !connection_aborted()) {
-                //error_log("Sending $chunck_size_kb kb");
                 echo fread($filePointer, 1024 * self::$chunck_size_kb);
                 $this->flush();
             }

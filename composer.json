@@ -1,0 +1,20 @@
+{
+	"name": "weboftalent/adverts",
+	"description": "Add adverts to a site filtering by category. Ads can be images or JavaScript",
+	"keywords": ["silverstripe", "adverts", "advertising"],
+	"authors": [
+		{
+			"name": "Gordon Anderson",
+			"email": "gordon.b.anderson@gmail.com",
+			"homepage": "https://github.com/gordonbanderson/weboftalent-adverts",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"silverstripe/cms": "~3.1"
+	},
+    "support": {
+        "issues": "https://github.com/gordonbanderson/weboftalent-adverts/issues"
+    },
+	"license": "BSD-3-Clause"
+}

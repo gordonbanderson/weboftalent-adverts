@@ -33,16 +33,10 @@ class AdvertSiteTreeExtension extends DataExtension
     public function onBeforeWrite()
     {
         $savedpage = SiteTree::get()->byID($this->owner->ID);
-        //error_log("Formerly saved category id = ".$savedpage->AdvertCategory()->Title);
-        //error_log("Category before save for page ".$this->owner->ID." is :".$this->owner->AdvertCategory()->Title);
         if ($savedpage->AdvertCategoryID != $this->owner->AdvertCategoryID) {
-            //error_log("RESET CACHE");
-
             // clear caching for live and stage subtree
             DB::query('update SiteTree_Live set IsCachedID = false, CachedAdvertCategoryID = 0;');
             DB::query('update SiteTree set IsCachedID = false, CachedAdvertCategoryID = 0;');
-        } else {
-            //error_log("CACHE CAN KEEP GOING");
         }
         parent::onBeforeWrite();
     }
@@ -65,18 +59,16 @@ class AdvertSiteTreeExtension extends DataExtension
             } else {
                 // otherwise traverse each parent in turn until reaching the root of the site, i.e. no parent
 
-                $parent = SiteTree::get()->byId($this->owner->ParentID);
+                $parent = $this->owner->Parent();
                 if ($parent) {
                     while (true) {
-                        //error_log("TRAVERSING UP THE TREE LOOKING FOR CATEGORY");
-                        if ($parent->IsCached) {
+                        if ($parent->IsCached || $parent->AdvertCategoryID > 0) {
                             $this->owner->AdvertCategoryID = $parent->AdvertCategoryID;
                             $this->owner->IsCached = true;
                             $this->owner->write();
                             $result = $this->owner->AdvertCategoryID;
                             break;
                         }
-
                         $parent = SiteTree::get()->byId($parent->ParentID);
                         if (!$parent) {
                             break;
@@ -85,7 +77,6 @@ class AdvertSiteTreeExtension extends DataExtension
                 }
             }
         }
-
         return $result;
     }
 }

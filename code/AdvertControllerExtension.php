@@ -22,7 +22,8 @@ class AdvertControllerExtension extends DataExtension
     @param $numberofads - the number of adverts to search for.  Normally 1 but skyscraper needs 2
     @param $showonajax - set this to false to hide adverts on ajax
     */
-    public function RenderAdvert($cachekey, $adverttype, $template = 'InlineAdvert', $numberofads = 1, $showonajax = true)
+    public function RenderAdvert($cachekey, $adverttype,
+        $template = 'InlineAdvert', $numberofads = 1, $showonajax = true)
     {
         // If we are using ajax and showonajax is set to false, return no ad
         if (Director::is_ajax()) {
@@ -37,6 +38,7 @@ class AdvertControllerExtension extends DataExtension
         if (isset($cachedcategories[$advertcategoryid])) {
             $advertcategory = $cachedcategories[$advertcategoryid];
         }
+
         if (!isset($advertcategory)) {
             $advertcategory = AdvertCategory::get()->byID($advertcategoryid);
             $cachedcategories[$advertcategoryid] = $advertcategory;
@@ -66,7 +68,6 @@ class AdvertControllerExtension extends DataExtension
 
             $firstad = null;
 
-            // datalist->first() was sometimes producing the same answer twice - SS bug?					
             foreach ($adverts->getIterator() as $advert) {
                 self::$advertsalreadyserved[$advert->ID] = $advert->ID;
                 if ($firstad === null) {
@@ -78,7 +79,7 @@ class AdvertControllerExtension extends DataExtension
                 'Adverts' => $adverts,
                 'Advert' => $firstad,
                 'CacheKey' => $cachekey,
-              ));
+            ));
 
             return $forTemplate->renderWith($template);
         } else {

@@ -16,36 +16,36 @@ class AdvertSiteTreeExtension extends DataExtension
         'IsCached' => 'Boolean',
     );
 
-  /*
-  Add a Location tab containing the map
-  */
-  public function updateCMSFields(FieldList $fields)
-  {
-      $categoryfield = new DropdownField('AdvertCategoryID', 'Category', AdvertCategory::get()->sort('Title')->map('ID', 'Title'));
-      $categoryfield->setEmptyString('(Select one)');
-      $fields->addFieldToTab('Root.AdvertCategory', $categoryfield);
-  }
+    /*
+    Add a Location tab containing the map
+    */
+    public function updateCMSFields(FieldList $fields)
+    {
+        $categoryfield = new DropdownField('AdvertCategoryID', 'Category', AdvertCategory::get()->sort('Title')->map('ID', 'Title'));
+        $categoryfield->setEmptyString('(Select one)');
+        $fields->addFieldToTab('Root.AdvertCategory', $categoryfield);
+    }
 
-  /*
+    /*
     Prior to an item being saved, check for the category having being changed.  If so we need to clear the category cache
     for all items in the database, and cache this one.
-  */
-  public function onBeforeWrite()
-  {
-      $savedpage = SiteTree::get()->byID($this->owner->ID);
-    //error_log("Formerly saved category id = ".$savedpage->AdvertCategory()->Title);
-    //error_log("Category before save for page ".$this->owner->ID." is :".$this->owner->AdvertCategory()->Title);
-    if ($savedpage->AdvertCategoryID != $this->owner->AdvertCategoryID) {
-        //error_log("RESET CACHE");
+    */
+    public function onBeforeWrite()
+    {
+        $savedpage = SiteTree::get()->byID($this->owner->ID);
+        //error_log("Formerly saved category id = ".$savedpage->AdvertCategory()->Title);
+        //error_log("Category before save for page ".$this->owner->ID." is :".$this->owner->AdvertCategory()->Title);
+        if ($savedpage->AdvertCategoryID != $this->owner->AdvertCategoryID) {
+            //error_log("RESET CACHE");
 
-        // clear caching for live and stage subtree
-        DB::query('update SiteTree_Live set IsCachedID = false, CachedAdvertCategoryID = 0;');
-        DB::query('update SiteTree set IsCachedID = false, CachedAdvertCategoryID = 0;');
-    } else {
-        //error_log("CACHE CAN KEEP GOING");
+            // clear caching for live and stage subtree
+            DB::query('update SiteTree_Live set IsCachedID = false, CachedAdvertCategoryID = 0;');
+            DB::query('update SiteTree set IsCachedID = false, CachedAdvertCategoryID = 0;');
+        } else {
+            //error_log("CACHE CAN KEEP GOING");
+        }
+        parent::onBeforeWrite();
     }
-      parent::onBeforeWrite();
-  }
 
   /*
     Get the advert category.  Either use the cached advert category, or traverse the tree towards the root looking for it

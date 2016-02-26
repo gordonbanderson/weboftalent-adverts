@@ -68,7 +68,7 @@
      * This is quicker than pushing files through PHP but
      * requires either Lighttpd or mod_xsendfile for Apache.
      *
-     * @link http://tn123.ath.cx/mod_xsendfile/ 
+     * @link http://tn123.ath.cx/mod_xsendfile/
      */
     public static function use_x_sendfile_method()
     {
@@ -78,7 +78,7 @@
 
     /**
      * Use internal SilverStripe to send files to the browser.
-     * This is the least efficient method but is useful for 
+     * This is the least efficient method but is useful for
      * testing. Not recommend for production
      * environments.
      */
@@ -200,4 +200,4 @@
         }
         @ob_start();
     }
-    }
+}

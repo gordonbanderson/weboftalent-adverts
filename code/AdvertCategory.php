@@ -7,33 +7,33 @@
 class AdvertCategory extends DataObject
 {
     public static $searchable_fields = array(
-    'Title',
-  );
+        'Title',
+    );
 
     public static $has_many = array(
-    'Adverts' => 'Advert',
-  );
+        'Adverts' => 'Advert',
+    );
 
     public static $db = array(
-    // name of the category
-    'Title' => 'Varchar(255)',
+        // name of the category
+        'Title' => 'Varchar(255)',
 
-    // whether or not ads are enabled
-    'Enabled' => 'Boolean',
+        // whether or not ads are enabled
+        'Enabled' => 'Boolean',
 
-  );
+    );
 
     public static $summary_fields = array(
-    'Title' => 'Title',
-    'Enabled' => 'Enabled',
-  );
+        'Title' => 'Title',
+        'Enabled' => 'Enabled',
+    );
 
     public function getCMSFields()
     {
         $fields = new FieldList();
 
-    // add a tab
-    $fields->push(new TabSet('Root', $mainTab = new Tab('Main')));
+        // add a tab
+        $fields->push(new TabSet('Root', $mainTab = new Tab('Main')));
         $mainTab->setTitle(_t('SiteTree.TABMAIN', 'Main'));
 
         $fields->addFieldToTab('Root.Main',  new TextField('Title', 'The name of the category'));

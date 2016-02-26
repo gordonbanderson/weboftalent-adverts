@@ -7,34 +7,34 @@
 class AdvertLayoutType extends DataObject
 {
     public static $searchable_fields = array(
-    'Title',
-  );
+        'Title',
+    );
 
     public static $db = array(
-    // name of the layout type, e.g. 'main banner' or 'skyscraper'
-    'Title' => 'Varchar(255)',
+        // name of the layout type, e.g. 'main banner' or 'skyscraper'
+        'Title' => 'Varchar(255)',
 
-    // whether or not ads are enabled
-    'Width' => 'Int',
-    'Height' => 'Int',
-  );
+        // whether or not ads are enabled
+        'Width' => 'Int',
+        'Height' => 'Int',
+    );
 
     public static $summary_fields = array(
-    'Title' => 'Title',
-    'Width' => 'Width',
-    'Height' => 'Height',
-  );
+        'Title' => 'Title',
+        'Width' => 'Width',
+        'Height' => 'Height',
+    );
 
     public static $has_many = array(
-    'Adverts' => 'Advert',
-  );
+        'Adverts' => 'Advert',
+    );
 
     public function getCMSFields()
     {
         $fields = new FieldList();
 
-    // add a tab
-    $fields->push(new TabSet('Root', $mainTab = new Tab('Main')));
+        // add a tab
+        $fields->push(new TabSet('Root', $mainTab = new Tab('Main')));
         $mainTab->setTitle(_t('SiteTree.TABMAIN', 'Main'));
 
         $fields->addFieldToTab('Root.Main',  new TextField('Title', 'The name of the category'));

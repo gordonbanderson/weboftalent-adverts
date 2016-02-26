@@ -3,7 +3,7 @@
  * Handles requests for secure files by url.
  *
  * @author Hamish Campbell <hn.campbell@gmail.com>
- * @copyright copyright (c) 2010, Hamish Campbell 
+ * @copyright copyright (c) 2010, Hamish Campbell
  */
 class SecureFileController extends Controller implements PermissionProvider
 {
@@ -47,7 +47,7 @@ class SecureFileController extends Controller implements PermissionProvider
      * This is quicker than pushing files through PHP but
      * requires either Lighttpd or mod_xsendfile for Apache.
      *
-     * @link http://tn123.ath.cx/mod_xsendfile/ 
+     * @link http://tn123.ath.cx/mod_xsendfile/
      */
     public static function use_x_sendfile_method()
     {
@@ -57,7 +57,7 @@ class SecureFileController extends Controller implements PermissionProvider
 
     /**
      * Use internal SilverStripe to send files to the browser.
-     * This is the least efficient method but is useful for 
+     * This is the least efficient method but is useful for
      * testing. Not recommend for production
      * environments.
      */
@@ -136,7 +136,7 @@ class SecureFileController extends Controller implements PermissionProvider
 
     /**
      * Process incoming requests passed to this controller.
-     * 
+     *
      * @return HTTPResponse
      */
     public function handleAction()
@@ -162,7 +162,7 @@ class SecureFileController extends Controller implements PermissionProvider
 
     /**
      * File Not Found response.
-     * 
+     *
      * @param $body Optional message body
      *
      * @return HTTPResponse
@@ -178,7 +178,7 @@ class SecureFileController extends Controller implements PermissionProvider
 
     /**
      * File not authorized response.
-     * 
+     *
      * @param $body Optional message body
      *
      * @return HTTPResponse
@@ -257,7 +257,7 @@ class SecureFileController extends Controller implements PermissionProvider
 
     /**
      * Permission provider for access to secure files.
-     * 
+     *
      * @return array
      */
     public function providePermissions()

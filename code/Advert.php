@@ -59,7 +59,7 @@ class Advert extends DataObject
 
     public function getCMSFields()
     {
-        Requirements::javascript('weboftalent-adverts/javascript/advertedit.js');
+        Requirements::javascript('adverts/javascript/advertedit.js');
 
         // throw away the scaffolding and start afresh
         $fields = new FieldList();
@@ -101,10 +101,11 @@ class Advert extends DataObject
         $fdf->setConfig('showcalendar', true);
 
         $categoryfield = new DropdownField('AdvertCategoryID', 'Category', AdvertCategory::get()->sort('Title')->map('ID', 'Title'));
-        $categoryfield->setEmptyString('(Select one)');
-
-        $layoutfield = new DropdownField('AdvertLayoutTypeID', 'Layout Type', AdvertLayoutType::get()->sort('Title')->map('ID', 'Title'));
-        $layoutfield->setEmptyString('(Select one)');
+        $categoryfield->setEmptyString('-- Select one --');
+        $mapping = AdvertLayoutType::get()->sort('Title')->map('ID', 'Title')->toArray();
+        error_log(print_r($mapping,1));
+        $layoutfield = new DropdownField('AdvertLayoutTypeID', 'Layout Type', $mapping);
+        $layoutfield->setEmptyString('-- Select one --');
 
         $fields->addFieldToTab('Root.Main', $categoryfield);
         $fields->addFieldToTab('Root.Main', $layoutfield);

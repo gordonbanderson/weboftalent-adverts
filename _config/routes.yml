@@ -1,0 +1,7 @@
+---
+Name: advertroutes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'advert/$Action/$DigitalSignature': 'Advert_Controller'

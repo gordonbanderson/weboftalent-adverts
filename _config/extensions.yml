@@ -1,0 +1,12 @@
+---
+name: wot-adverts-extensions
+---
+Page_Controller:
+  extensions:
+    ['AdvertControllerExtension']
+SiteTree:
+  extensions:
+     ['AdvertSiteTreeExtension']
+SiteConfig:
+  extensions:
+     ['AdvertSiteConfig']

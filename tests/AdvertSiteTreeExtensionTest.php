@@ -13,4 +13,14 @@ class AdvertSiteTreeExtensionTest extends SapphireTest
         $categoryID = $page->CalculateAdvertCategoryID();
         $this->assertEquals($sectionPage->AdvertCategoryID, $categoryID);
     }
+
+    /*
+    Test grandchild of a grandparent with a set advert category ID
+     */
+    public function testCalculateAdvertCategoryIDGrandChild() {
+        $sectionPage = $this->objFromFixture('Page', 'Section');
+        $page = $this->objFromFixture('Page', 'SectionGrandChild');
+        $categoryID = $page->CalculateAdvertCategoryID();
+        $this->assertEquals($sectionPage->AdvertCategoryID, $categoryID);
+    }
 }

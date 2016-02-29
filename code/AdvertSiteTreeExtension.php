@@ -35,8 +35,8 @@ class AdvertSiteTreeExtension extends DataExtension
         $savedpage = SiteTree::get()->byID($this->owner->ID);
         if ($savedpage && $savedpage->AdvertCategoryID != $this->owner->AdvertCategoryID) {
             // clear caching for live and stage subtree
-            DB::query('update SiteTree_Live set IsCachedID = false, CachedAdvertCategoryID = 0;');
-            DB::query('update SiteTree set IsCachedID = false, CachedAdvertCategoryID = 0;');
+            DB::query('update SiteTree_Live set IsCachedID = 0, CachedAdvertCategoryID = 0;');
+            DB::query('update SiteTree set IsCachedID = 0, CachedAdvertCategoryID = 0;');
         }
         parent::onBeforeWrite();
     }

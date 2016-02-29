@@ -1,0 +1,45 @@
+
+
+AdvertCategory:
+  default:
+    Title: Default
+    Enabled: 1
+  blogonly:
+    Title: BlogOnly
+    Enabled: 1
+AdvertLayoutType:
+  leaderboard:
+    Title: Leaderboard
+    Width: 800
+    Height: 200
+  mpu:
+    Title: MPU
+    Width: 350
+    Height: 250
+Advert:
+  advert001:
+    Title: banner_above_header
+    AdvertCategory: =>AdvertCategory.default
+    AdvertLayoutType: =>AdvertLayoutType.leaderboard
+  advert002:
+    Title: mpu_above_fold
+    AdvertCategory: =>AdvertCategory.default
+    AdvertLayoutType: =>AdvertLayoutType.mpu
+
+
+Page:
+  Home:
+    Title: Home
+    Content: Home Page
+  Section:
+    Title: A Section
+    Content: This is a Section
+    AdvertCategory: =>AdvertCategory.default
+  SectionChild:
+    Title: A section child
+    Content: This is a section child
+    Parent: =>Page.Section
+  SectionGrandChild:
+    Title: A section grandchild
+    Content: This is a section grandchild
+    Parent: =>Page.SectionChild

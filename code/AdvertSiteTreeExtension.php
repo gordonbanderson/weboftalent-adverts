@@ -27,8 +27,7 @@ class AdvertSiteTreeExtension extends DataExtension
     }
 
     /*
-    Prior to an item being saved, check for the category having being changed.  If so we need to clear the category cache
-    for all items in the database, and cache this one.
+    Prior to an item being saved, check for the category having being changed.  If so we need to clear the category cache for all items in the database, and cache this one.
     */
     public function onBeforeWrite()
     {

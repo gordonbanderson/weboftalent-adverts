@@ -15,6 +15,44 @@ class AdvertControllerExtension extends DataExtension
     public static $ctr = 1;
 
     /*
+    * @deprecated since version 1.0.0
+     */
+    public function RenderAdvert($cachekey, $adverttype,
+        $template = 'InlineAdvert', $numberofads = 1, $showonajax = true)
+    {
+        return $this->RenderRandomAdvert($cachekey, $adverttype, $template,
+            $numberofads, $showonajax);
+    }
+
+    /*
+    Render a fixed advert by name.  This is intended for either
+    i) An image ad that appears all the time
+    ii) An adserver ad that may or may not rotate
+     */
+    public function RenderFixedAdvert($advertTitle, $template = 'InlineAdvert',
+        $showonajax = true) {
+        // If we are using ajax and showonajax is set to false, return no ad
+        if (Director::is_ajax()) {
+            if ($showonajax !== true) {
+                return '';
+            }
+        }
+
+        $html = '';
+        $advert = Advert::get()->filter('Title', $advertTitle)->first();
+        if ($advert) {
+            $forTemplate = new ArrayData(array(
+                'Advert' => $advert,
+                'CacheKey' => $advertTitle,
+            ));
+            $html = $forTemplate->renderWith($template);
+        }
+
+
+        return $html;
+    }
+
+    /*
     Work out the appropriate category and render a random advert from that category
     @param #adverttype The type of advert, e.g. MPU or Skyscraper
     @param $prefix HTML prefix to the advert, e.g an li wrapper
@@ -22,7 +60,7 @@ class AdvertControllerExtension extends DataExtension
     @param $numberofads - the number of adverts to search for.  Normally 1 but skyscraper needs 2
     @param $showonajax - set this to false to hide adverts on ajax
     */
-    public function RenderAdvert($cachekey, $adverttype,
+    public function RenderRandomAdvert($cachekey, $adverttype,
         $template = 'InlineAdvert', $numberofads = 1, $showonajax = true)
     {
         // If we are using ajax and showonajax is set to false, return no ad

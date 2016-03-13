@@ -139,7 +139,7 @@ class SecureFileController extends Controller implements PermissionProvider
      *
      * @return HTTPResponse
      */
-    protected function handleAction($request, $action) {
+    protected function handleAction($request, $action)
     {
         $url = array_key_exists('url', $_GET) ? $_GET['url'] : $_SERVER['REQUEST_URI'];
         $file_path = Director::makeRelative($url);
